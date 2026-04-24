@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Python Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="calculator-card">
+            <div class="card-header">
+                <p class="eyebrow">Flask App</p>
+                <h1>Simple Calculator</h1>
+                <p class="subcopy">Tap the buttons or type an expression and press equals.</p>
+            </div>
+
+            <form method="post" class="calculator-form">
+                <label for="expression" class="sr-only">Expression</label>
+                <input
+                    id="expression"
+                    name="expression"
+                    type="text"
+                    inputmode="decimal"
+                    autocomplete="off"
+                    value="{{ expression }}"
+                    class="display"
+                    placeholder="0"
+                >
+
+                <div class="result-panel">
+                    <span>Result</span>
+                    <strong>{{ result }}</strong>
+                </div>
+
+                {% if error %}
+                <p class="error-message">{{ error }}</p>
+                {% endif %}
+
+                <div class="button-grid">
+                    <button type="button" data-value="(">(</button>
+                    <button type="button" data-value=")">)</button>
+                    <button type="button" data-value="/" class="operator">÷</button>
+                    <button type="button" data-action="clear" class="utility">C</button>
+
+                    <button type="button" data-value="7">7</button>
+                    <button type="button" data-value="8">8</button>
+                    <button type="button" data-value="9">9</button>
+                    <button type="button" data-value="*" class="operator">×</button>
+
+                    <button type="button" data-value="4">4</button>
+                    <button type="button" data-value="5">5</button>
+                    <button type="button" data-value="6">6</button>
+                    <button type="button" data-value="-" class="operator">−</button>
+
+                    <button type="button" data-value="1">1</button>
+                    <button type="button" data-value="2">2</button>
+                    <button type="button" data-value="3">3</button>
+                    <button type="button" data-value="+" class="operator">+</button>
+
+                    <button type="button" data-value="0" class="span-two">0</button>
+                    <button type="button" data-value=".">.</button>
+                    <button type="submit" class="equals">=</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        const display = document.getElementById("expression");
+        const buttons = document.querySelectorAll(".button-grid button");
+
+        buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const { value, action } = button.dataset;
+
+                if (action === "clear") {
+                    display.value = "";
+                    display.focus();
+                    return;
+                }
+
+                if (value) {
+                    display.value += value;
+                    display.focus();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
